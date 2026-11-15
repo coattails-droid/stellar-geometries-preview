@@ -72,6 +72,15 @@
   .lkf .socials a:hover { border-color: var(--accent); color: var(--accent); }
   .lkf .socials svg { width: 21px; height: 21px; fill: currentColor; }
   .lkf .fine { color: var(--muted); font-size: 13px; }
+
+  .playwrap { position: relative; aspect-ratio: 1; }
+  .playwrap img, .playwrap iframe { width: 100%; height: 100%; object-fit: cover; display: block; background: #000; border: 1px solid var(--line); }
+  .playbtn { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); background: rgba(13,7,8,.78); color: var(--accent); border: 1px solid var(--accent); padding: 8px 18px; font: inherit; font-size: 13px; letter-spacing: 0.14em; cursor: pointer; white-space: nowrap; }
+  .playbtn:hover { background: var(--btn-bg); color: var(--btn-ink); }
+  :root[data-theme="warmgray"] .playbtn { background: rgba(245,242,235,.88); color: #111110; border-color: #111110; }
+  :root[data-theme="warmgray"] .playbtn:hover { background: #111110; color: #F5F2EB; }
+  .stopcatch { position: absolute; inset: 0; cursor: pointer; }
+  .cell .playwrap { width: min(92vw, 420px); margin: 0 auto; }
 </style><!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-QFQNW5T87Y"></script>
 <script>
@@ -93,22 +102,22 @@
 <div class="mintwrap"><a class="live mint" href="https://stellar.coattails.eth.limo/">MINT</a></div>
 <div class="col">
 <div class="cell">
-<a href="token-0.html"><img src="stills/token-0.webp" alt="Stellar Geometries — Token 0" width="540" height="540"></a>
+<div class="playwrap" data-src="token-0.html"><img src="stills/token-0.webp" alt="Stellar Geometries — Token 0" width="540" height="540"><button class="playbtn" aria-label="Play Stellar Geometries token 0 live">&#9654; PLAY LOOP</button></div>
 <div class="label">Token 0</div>
 <div class="traits"><span>Density:</span> 15 (28 dots) · <span>Spread:</span> 64 · <span>Grid:</span> Circle · <span>Rings:</span> 3</div>
 <a class="live" href="token-0.html">View live</a>
 </div><div class="cell">
-<a href="token-1.html"><img src="stills/token-1.webp" alt="Stellar Geometries — Token 1" width="540" height="540" loading="lazy" decoding="async"></a>
+<div class="playwrap" data-src="token-1.html"><img src="stills/token-1.webp" alt="Stellar Geometries — Token 1" width="540" height="540" loading="lazy" decoding="async"><button class="playbtn" aria-label="Play Stellar Geometries token 1 live">&#9654; PLAY LOOP</button></div>
 <div class="label">Token 1</div>
 <div class="traits"><span>Density:</span> 51 (53 dots) · <span>Spread:</span> 85 · <span>Grid:</span> Triangle · <span>Rings:</span> 6</div>
 <a class="live" href="token-1.html">View live</a>
 </div><div class="cell">
-<a href="token-2.html"><img src="stills/token-2.webp" alt="Stellar Geometries — Token 2" width="540" height="540" loading="lazy" decoding="async"></a>
+<div class="playwrap" data-src="token-2.html"><img src="stills/token-2.webp" alt="Stellar Geometries — Token 2" width="540" height="540" loading="lazy" decoding="async"><button class="playbtn" aria-label="Play Stellar Geometries token 2 live">&#9654; PLAY LOOP</button></div>
 <div class="label">Token 2</div>
 <div class="traits"><span>Density:</span> 36 (43 dots) · <span>Spread:</span> 24 · <span>Grid:</span> Square · <span>Rings:</span> 3</div>
 <a class="live" href="token-2.html">View live</a>
 </div><div class="cell">
-<a href="token-3.html"><img src="stills/token-3.webp" alt="Stellar Geometries — Token 3" width="540" height="540" loading="lazy" decoding="async"></a>
+<div class="playwrap" data-src="token-3.html"><img src="stills/token-3.webp" alt="Stellar Geometries — Token 3" width="540" height="540" loading="lazy" decoding="async"><button class="playbtn" aria-label="Play Stellar Geometries token 3 live">&#9654; PLAY LOOP</button></div>
 <div class="label">Token 3</div>
 <div class="traits"><span>Density:</span> 87 (77 dots) · <span>Spread:</span> 11 · <span>Grid:</span> Triangle · <span>Rings:</span> 9</div>
 <a class="live" href="token-3.html">View live</a>
@@ -145,4 +154,31 @@
   </div>
   <div class="fine">Calvin Fought :: Coattails :: artist.coattails.eth.limo</div>
 </footer>
+
+<script>
+(function(){
+  document.querySelectorAll('.playwrap').forEach(function(wrap){
+    var src = wrap.getAttribute('data-src');
+    var btn = wrap.querySelector('.playbtn');
+    var img = wrap.querySelector('img');
+    if(!btn || !img || !src) return;
+    btn.addEventListener('click', function(){
+      var frame = document.createElement('iframe');
+      frame.src = src;
+      frame.title = (img.alt || 'Token') + ' live';
+      var stopper = document.createElement('div');
+      stopper.className = 'stopcatch';
+      stopper.title = 'Click to stop';
+      stopper.addEventListener('click', function(){
+        wrap.innerHTML = '';
+        wrap.appendChild(img);
+        wrap.appendChild(btn);
+      });
+      wrap.innerHTML = '';
+      wrap.appendChild(frame);
+      wrap.appendChild(stopper);
+    });
+  });
+})();
+</script>
 </body></html>
