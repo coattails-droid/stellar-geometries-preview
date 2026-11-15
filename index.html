@@ -1,25 +1,65 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en" data-theme="sunlight"><head>
+<script>
+  /* Theme is set before first paint: saved choice wins, otherwise Sunlight (the standard). */
+  (function(){try{var t=localStorage.getItem('coattails-theme');document.documentElement.setAttribute('data-theme',t==='warmgray'?'warmgray':'sunlight');}catch(e){document.documentElement.setAttribute('data-theme','sunlight');}})();
+</script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stellar Geometries - Preview</title>
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
-  html,body{margin:0;background:#0d0708;color:#e8e2d4;font-family:'DejaVu Sans Mono',Menlo,Consolas,'Courier New',monospace;}
-  h1{text-align:center;font-weight:600;letter-spacing:.15em;font-size:20px;margin:28px 0 6px;color:#ffc46e;}
-  p.sub{text-align:center;color:#9a937f;font-size:15px;margin:0 0 24px;}
+  /* Sunlight (default) — the branding guide standard. */
+  :root, :root[data-theme="sunlight"]{
+    --bg:#0d0708; --surface:#0d0708; --ink:#e8e2d4; --muted:#9a937f;
+    --line:#3a362c; --line-dark:#3a362c; --title:#ffc46e; --accent:#ffc46e;
+    --btn-bg:#ffc46e; --btn-ink:#14100a; --btn-hover:#ffa37e; --focus:#ffc46e;
+    --shadow-card:none;
+    --font-display:'DejaVu Sans Mono',Menlo,Consolas,'Courier New',monospace;
+    --font-body:'DejaVu Sans Mono',Menlo,Consolas,'Courier New',monospace;
+  }
+  /* Warm Gray (visitor alternate) — branding guide v1.1 Light theme. */
+  :root[data-theme="warmgray"]{
+    --bg:#E8E4DC; --surface:#F5F2EB; --ink:#111110; --muted:#57534A;
+    --line:#CFC9BB; --line-dark:#111110; --title:#000; --accent:#111110;
+    --btn-bg:#111110; --btn-ink:#F5F2EB; --btn-hover:#26241F; --focus:#111110;
+    --shadow-card:0 20px 38px -24px rgba(30,26,18,.35);
+    --font-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    --font-body:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  :root { color-scheme: dark; }
+  :root[data-theme="warmgray"] { color-scheme: light; }
+
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);}
+  h1{text-align:center;font-weight:600;letter-spacing:.15em;font-size:20px;margin:28px 0 6px;color:var(--title);}
+  p.sub{text-align:center;color:var(--muted);font-size:15px;margin:0 0 24px;}
   .col{display:flex;flex-direction:column;align-items:center;gap:32px;padding:0 24px 48px;}
-  .cell{text-align:center;background:transparent;border:1px solid #3a362c;border-radius:0;padding:20px;}
-  .label{margin-top:12px;font-size:14px;letter-spacing:.08em;color:#ffc46e;font-weight:600;}
-  .traits{margin-top:8px;font-size:13px;color:#9a937f;}
-  .traits span{color:#e8e2d4;}
+  .cell{text-align:center;background:transparent;border:1px solid var(--line);border-radius:0;padding:20px;}
+  .label{margin-top:12px;font-size:14px;letter-spacing:.08em;color:var(--accent);font-weight:600;}
+  .traits{margin-top:8px;font-size:13px;color:var(--muted);}
+  .traits span{color:var(--ink);}
   .cell img{width:min(92vw,420px);height:auto;display:block;background:#000;}
-  .live{display:block;margin:12px 2px 2px;padding:8px 0;text-align:center;font-size:14px;letter-spacing:.14em;color:#ffc46e;text-decoration:none;border:1px solid #3a362c;border-radius:6px;background:transparent;}
-  .live:hover{background:#1c1611;border-color:#ffc46e;}
-  p.desc{text-align:center;color:#e8e2d4;font-size:15px;line-height:1.7;max-width:640px;margin:0 auto 18px;padding:0 24px;}
+  .live{display:block;margin:12px 2px 2px;padding:8px 0;text-align:center;font-size:14px;letter-spacing:.14em;color:var(--accent);text-decoration:none;border:1px solid var(--line);border-radius:6px;background:transparent;}
+  .live:hover{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg);}
+  p.desc{text-align:center;color:var(--ink);font-size:15px;line-height:1.7;max-width:640px;margin:0 auto 18px;padding:0 24px;}
   .mintwrap{max-width:420px;margin:0 auto 26px;padding:0 24px;}
-  a.mint{border-color:#ffc46e;font-weight:600;}
+  a.mint{border-color:var(--accent);font-weight:600;}
+
+  /* ---------- theme toggle (guide v1.1) ---------- */
+  .topbar{display:flex;justify-content:flex-end;padding:20px 24px 0;}
+  .theme-toggle{display:inline-flex;border:1.5px solid var(--line-dark);border-radius:999px;
+    overflow:hidden;background:var(--surface);}
+  .theme-toggle button{appearance:none;-webkit-appearance:none;border:0;background:transparent;
+    color:var(--muted);font-family:var(--font-body);font-size:12px;font-weight:700;
+    letter-spacing:.16em;text-transform:uppercase;padding:9px 18px;cursor:pointer;
+    transition:background .2s ease,color .2s ease;}
+  .theme-toggle button[aria-pressed="true"]{background:var(--btn-bg);color:var(--btn-ink)}
+  .theme-toggle button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+  /* ---------- centered content (already centered; card shadow for Light) ---------- */
+  .cell{box-shadow:var(--shadow-card)}
+  h1{font-family:var(--font-display)}
 </style><!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-QFQNW5T87Y"></script>
 <script>
@@ -29,8 +69,14 @@
   gtag('config', 'G-QFQNW5T87Y');
 </script>
 </head><body>
+<div class="topbar">
+  <div class="theme-toggle" role="group" aria-label="Theme">
+    <button type="button" data-set-theme="sunlight" aria-pressed="true">Dark</button>
+    <button type="button" data-set-theme="warmgray" aria-pressed="false">Light</button>
+  </div>
+</div>
 <h1>STELLAR GEOMETRIES</h1>
-<p class="sub">Series 5 · <a href="https://artist.coattails.eth.limo/" style="color:#ffc46e;text-decoration:none">CALVIN FOUGHT (COATTAILS)</a> · locked template · 5 foci pentagon (vertical)</p>
+<p class="sub">Series 5 · <a href="https://artist.coattails.eth.limo/" style="color:var(--accent);text-decoration:none">CALVIN FOUGHT (COATTAILS)</a> · locked template · 5 foci pentagon (vertical)</p>
 <p class="desc">A four-way kaleidoscope of volumetric dot fields: accent dots webbed in gradient thread, with interlocking circles, in a seamless loop of radial wave and toroidal fold. One locked look &mdash; every token draws itself live from its own on-chain hash.</p>
 <div class="mintwrap"><a class="live mint" href="https://stellar.coattails.eth.limo/">MINT</a></div>
 <div class="col">
@@ -56,4 +102,24 @@
 <a class="live" href="token-3.html">View live</a>
 </div>
 </div>
+<script>
+  /* Theme toggle wiring (guide v1.1): sync pressed state, save the choice. */
+  (function(){
+    var root=document.documentElement;
+    var btns=document.querySelectorAll('[data-set-theme]');
+    function sync(){
+      var t=root.getAttribute('data-theme')||'sunlight';
+      btns.forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-set-theme')===t?'true':'false');});
+    }
+    btns.forEach(function(b){
+      b.addEventListener('click',function(){
+        var t=b.getAttribute('data-set-theme');
+        root.setAttribute('data-theme',t);
+        try{localStorage.setItem('coattails-theme',t);}catch(e){}
+        sync();
+      });
+    });
+    sync();
+  })();
+</script>
 </body></html>
